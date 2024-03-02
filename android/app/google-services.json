@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "387624651112",
+    "project_id": "my-rating-app-auth",
+    "storage_bucket": "my-rating-app-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387624651112:android:cefda9cd70345e99996edd",
+        "android_client_info": {
+          "package_name": "com.turminaz.my_rating_app_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387624651112-462a2b8p4o5ameehq14q9jqaqjqssg7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEcxmdcBWLzDlnN-jzd7ORXrx0StiDRN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387624651112-462a2b8p4o5ameehq14q9jqaqjqssg7k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "387624651112-7l71dbj8d8ad29rene6omjrmdlcosieg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.turminaz.myRatingAppMobile.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
