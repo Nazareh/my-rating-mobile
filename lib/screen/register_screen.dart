@@ -14,6 +14,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final displayNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -34,6 +35,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           email: emailController.text,
           password: passwordController.text,
         );
+       var user = FirebaseAuth.instance.currentUser!;
+       user.updateDisplayName(displayNameController.text);
+       
       } else {
         //show error password dont match
         genericErrorMessage("Password don't match!");

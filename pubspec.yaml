@@ -15,6 +15,7 @@ dependencies:
   firebase_auth: ^4.17.6
   google_sign_in: ^6.2.1
   flutter_svg: ^2.0.5
+  interval_time_picker: ^2.0.0+5
 
 dev_dependencies:
   flutter_test:

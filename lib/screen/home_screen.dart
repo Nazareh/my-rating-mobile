@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_rating_app_mobile/components/match_form.dart';
+import 'package:my_rating_app_mobile/components/match_upload.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -23,11 +25,15 @@ class HomeScreen extends StatelessWidget {
               label: const Text("Sign Out")),
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [],
+      body:  SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Text("Welcome ${user.displayName}"),
+              const MatchUpload()
+            ],
+          )
         ),
       ),
     );
