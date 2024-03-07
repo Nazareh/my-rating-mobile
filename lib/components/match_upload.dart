@@ -4,6 +4,9 @@ import 'package:my_rating_app_mobile/components/my_button.dart';
 import 'package:my_rating_app_mobile/components/search_player_delegate.dart';
 
 import '../domain/player.dart';
+import '../util/string_utils.dart';
+import 'flash_message.dart';
+
 
 class MatchUpload extends StatefulWidget {
   final Player loggedPlayer;
@@ -24,6 +27,11 @@ class MatchUpload extends StatefulWidget {
 
 class _MatchUploadState extends State<MatchUpload> {
   int _sets = 1;
+  Player? _myParter;
+  Player? _opponent1;
+  Player? _opponent2;
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   final List<TextEditingController> _team1Results = [
     TextEditingController(),
     TextEditingController(),
@@ -36,12 +44,6 @@ class _MatchUploadState extends State<MatchUpload> {
     TextEditingController()
   ];
 
-  Player? _myParter;
-  Player? _opponent1;
-  Player? _opponent2;
-  final TextEditingController _dateController = TextEditingController();
-
-  final TextEditingController _timeController = TextEditingController();
 
   void setPlayer(Player player, Player? spot) {
     setState(() {
@@ -95,6 +97,45 @@ class _MatchUploadState extends State<MatchUpload> {
     _team2Results[set].text = value;
   }
 
+  void clearForm() {
+    setState(() {
+      _sets = 1;
+      _myParter = null;
+      _opponent1 = null;
+      _opponent2 = null;
+      _dateController.clear();
+      _timeController.clear();
+
+      for (var e in _team1Results) {
+        e.clear();
+      }
+      for (var e in _team2Results) {
+        e.clear();
+      }
+    });
+  }
+
+  String? get _errorText {
+    if ({_myParter?.email, _opponent1?.email, _opponent2?.email}.length != 3) {
+      return 'All 4 players must be selected';
+    }
+    if (_dateController.text == '' || _timeController.text == '') {
+      return 'Date and time must be selected';
+    }
+
+    if (_dateController.text == '' || _timeController.text == '') {
+      return 'Date and time must be selected';
+    }
+
+    for (int set = 0; set < _sets; set++) {
+      if (_team1Results[set].text == '' || _team2Results[set].text == '') {
+        return 'All sets must be filled';
+      }
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -141,14 +182,20 @@ class _MatchUploadState extends State<MatchUpload> {
                       Expanded(
                         child: Row(
                           children: [
-                            _playerAvatar(_opponent1?.photoUrl, _opponent1?.displayName,
-                                    (value) => setState(() {
-                                  _opponent1 = value;
-                                }), context),
-                            _playerAvatar(_opponent2?.photoUrl, _opponent2?.displayName,
-                                    (value) => setState(() {
-                                  _opponent2 = value;
-                                }), context)
+                            _playerAvatar(
+                                _opponent1?.photoUrl,
+                                _opponent1?.displayName,
+                                (value) => setState(() {
+                                      _opponent1 = value;
+                                    }),
+                                context),
+                            _playerAvatar(
+                                _opponent2?.photoUrl,
+                                _opponent2?.displayName,
+                                (value) => setState(() {
+                                      _opponent2 = value;
+                                    }),
+                                context)
                           ],
                         ),
                       ),
@@ -243,14 +290,16 @@ class _MatchUploadState extends State<MatchUpload> {
                             Expanded(
                                 child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
-                                      inactiveTrackColor: const Color(0xFF8D8E98),
+                                      inactiveTrackColor:
+                                          const Color(0xFF8D8E98),
                                       activeTrackColor: Colors.blue,
                                       thumbColor: const Color(0xffdbff08),
                                       overlayColor: const Color(0x29EB1555),
                                       thumbShape: const RoundSliderThumbShape(
                                           enabledThumbRadius: 15.0),
-                                      overlayShape: const RoundSliderOverlayShape(
-                                          overlayRadius: 30.0),
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
+                                              overlayRadius: 30.0),
                                     ),
                                     child: Slider(
                                       value: _sets.toDouble(),
@@ -280,7 +329,7 @@ class _MatchUploadState extends State<MatchUpload> {
                               height: 40,
                               child: Text(
                                   textAlign: TextAlign.center,
-                                  '${_shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${_shortenName(_myParter?.displayName) ?? '?'}')),
+                                  '${shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${shortenName(_myParter?.displayName) ?? '?'}')),
                           const SizedBox(
                             width: 150,
                             child: Divider(),
@@ -292,7 +341,7 @@ class _MatchUploadState extends State<MatchUpload> {
                               child: Text(
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.clip,
-                                  '${_shortenName(_opponent1?.displayName) ?? '?'} / ${_shortenName(_opponent2?.displayName) ?? '?' }')),
+                                  '${shortenName(_opponent1?.displayName) ?? '?'} / ${shortenName(_opponent2?.displayName) ?? '?'}')),
                         ],
                       ),
                       for (int set = 0; set < _sets; set++)
@@ -303,7 +352,7 @@ class _MatchUploadState extends State<MatchUpload> {
                               children: [
                                 SizedBox(
                                   height: 20,
-                                  child: Text(_toOrdinal(set + 1)),
+                                  child: Text(toOrdinal(set + 1)),
                                 ),
                                 SizedBox(
                                     height: 40,
@@ -318,7 +367,8 @@ class _MatchUploadState extends State<MatchUpload> {
                                         filled: true,
                                         isDense: true,
                                         fillColor: Colors.grey.shade200,
-                                        contentPadding: const EdgeInsets.all(5.0),
+                                        contentPadding:
+                                            const EdgeInsets.all(5.0),
                                         border: const OutlineInputBorder(),
                                       ),
                                     )),
@@ -340,7 +390,8 @@ class _MatchUploadState extends State<MatchUpload> {
                                         filled: true,
                                         isDense: true,
                                         fillColor: Colors.grey.shade200,
-                                        contentPadding: const EdgeInsets.all(5.0),
+                                        contentPadding:
+                                            const EdgeInsets.all(5.0),
                                         border: const OutlineInputBorder(),
                                       ),
                                     )),
@@ -351,9 +402,20 @@ class _MatchUploadState extends State<MatchUpload> {
                     ],
                   ),
                   Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      child: MyButton(onTap: () {}, text: 'Submit')),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: MyButton(
+                          onTap: () {
+                            if (_errorText == null) {
+                              showFlashMessage(context, 'Match Uploaded',
+                                  MessageType.success);
+                              clearForm();
+                            } else {
+                              showFlashMessage(
+                                  context, _errorText!, MessageType.error);
+                            }
+                          },
+                          text: 'Submit')),
 
                   // Expanded(child: Match())
                 ])),
@@ -376,31 +438,6 @@ _playerAvatar(
             backgroundColor: Colors.grey.shade300,
             minRadius: 25,
             backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-            child: photoUrl == null ? Text(_nameInitials(name) ?? '') : null,
+            child: photoUrl == null ? Text(nameInitials(name) ?? '') : null,
           )));
-}
-
-String? _shortenName(String? name) {
-  return name?.split(" ").reduce((value, element) => '$value ${element[0]}.');
-}
-
-String? _nameInitials(String? name) {
-  return name
-      ?.split(" ")
-      .reduce((value, element) => '${value[0]}${element[0]}');
-}
-
-String _toOrdinal(int number) {
-  if (number < 0) throw Exception('Invalid Number');
-
-  switch (number % 10) {
-    case 1:
-      return '${number}st';
-    case 2:
-      return '${number}nd';
-    case 3:
-      return '${number}rd';
-    default:
-      return '${number}th';
-  }
 }
