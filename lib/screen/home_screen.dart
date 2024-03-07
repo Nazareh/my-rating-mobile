@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_rating_app_mobile/components/match_form.dart';
 import 'package:my_rating_app_mobile/components/match_upload.dart';
+import 'package:my_rating_app_mobile/domain/player.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               Text("Welcome ${user.displayName}"),
-              const MatchUpload()
+              MatchUpload(loggedPlayer: Player(displayName: user.displayName!, email: user.email!, photoUrl: user.photoURL),)
             ],
           )
         ),

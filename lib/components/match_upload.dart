@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:interval_time_picker/interval_time_picker.dart';
+import 'package:my_rating_app_mobile/components/my_button.dart';
+import 'package:my_rating_app_mobile/components/search_player_delegate.dart';
+
+import '../domain/player.dart';
 
 class MatchUpload extends StatefulWidget {
+  final loggedPlayer;
+
   const MatchUpload({
     Key? key,
     this.color = const Color(0xFFFFE306),
     this.child,
+    required this.loggedPlayer,
   }) : super(key: key);
 
   final Color color;
@@ -18,12 +24,30 @@ class MatchUpload extends StatefulWidget {
 
 class _MatchUploadState extends State<MatchUpload> {
   int _sets = 1;
-  final List<int> _team1Results = [];
-  final List<int> _team2Results = [];
+  final List<TextEditingController> _team1Results = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
+  final List<TextEditingController> _team2Results = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
 
-  final TextEditingController _clubController = TextEditingController();
+  Player? _myParter;
+  Player? _opponent1;
+  Player? _opponent2;
   final TextEditingController _dateController = TextEditingController();
+
   final TextEditingController _timeController = TextEditingController();
+
+  void setPlayer(Player player, Player? spot) {
+    setState(() {
+      spot = player;
+    });
+  }
 
   void updateSets(int value) {
     setState(() {
@@ -56,21 +80,37 @@ class _MatchUploadState extends State<MatchUpload> {
     if (picked != null) {
       setState(() {
         _timeController.text =
-        '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+            '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
       });
     }
+  }
+
+  void updateTeam1Results(int set, String value) {
+    setState(() {
+      _team1Results[set].text = value;
+    });
+  }
+
+  void updateTeam2Results(int set, String value) {
+    _team2Results[set].text = value;
   }
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(30.0),
+      borderRadius: BorderRadius.circular(15.0),
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 400),
+        constraints: const BoxConstraints(minHeight: 350, maxHeight: 350),
         alignment: Alignment.center,
-        color: Colors.green.shade50,
+        decoration: BoxDecoration(
+          color: Colors.blue.shade50,
+          border: Border(
+            left: BorderSide(
+                color: Colors.blueAccent, width: 5.0, style: BorderStyle.solid),
+          ),
+        ),
         child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -81,13 +121,35 @@ class _MatchUploadState extends State<MatchUpload> {
                       ),
                       Expanded(
                         child: Row(
-                          children: [_playerAvatar(), _playerAvatar()],
+                          children: [
+                            _playerAvatar(
+                                widget.loggedPlayer.photoUrl,
+                                widget.loggedPlayer.displayName,
+                                () {},
+                                context),
+                            _playerAvatar(
+                                _myParter?.photoUrl,
+                                _myParter?.displayName,
+                                (value) => setState(() {
+                                      _myParter = value;
+                                    }),
+                                context)
+                          ],
                         ),
                       ),
                       const Text('VS', style: TextStyle(fontSize: 30)),
                       Expanded(
                         child: Row(
-                          children: [_playerAvatar(), _playerAvatar()],
+                          children: [
+                            _playerAvatar(_opponent1?.photoUrl, _opponent1?.displayName,
+                                    (value) => setState(() {
+                                  _opponent1 = value;
+                                }), context),
+                            _playerAvatar(_opponent2?.photoUrl, _opponent2?.displayName,
+                                    (value) => setState(() {
+                                  _opponent2 = value;
+                                }), context)
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -97,32 +159,6 @@ class _MatchUploadState extends State<MatchUpload> {
                   ),
                   SizedBox(
                     height: 10,
-                  ),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextFormField(
-                      controller: _clubController,
-                      keyboardType: TextInputType.datetime,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        hintText: 'Club',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.house,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      onChanged: (value) {},
-                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -233,18 +269,91 @@ class _MatchUploadState extends State<MatchUpload> {
                   ),
                   Row(
                     children: [
-                      for (int i = 0; i <= _sets; i++)
-                        _matchResult(
-                          i,
-                        ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                              // decoration: BoxDecoration(color: Colors.red.shade200),
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              height: 40,
+                              child: Text(
+                                  textAlign: TextAlign.center,
+                                  '${_shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${_shortenName("Rachel Ashby")}')),
+                          SizedBox(
+                            width: 150,
+                            child: Divider(),
+                          ),
+                          Container(
+                              height: 40,
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              // decoration: BoxDecoration(color: Colors.red.shade200),
+                              child: Text(
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.clip,
+                                  '${_shortenName("Tomafasfas Woods") ?? widget.loggedPlayer.email ?? '?'} / ${_shortenName("Megan fsafsafJamieson")}')),
+                        ],
+                      ),
+                      for (int set = 0; set < _sets; set++)
+                        Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                  child: Text('${_toOrdinal(set + 1)}'),
+                                ),
+                                SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _team1Results[set],
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) =>
+                                          {updateTeam1Results(set, value)},
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        isDense: true,
+                                        fillColor: Colors.grey.shade200,
+                                        contentPadding: EdgeInsets.all(5.0),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    )),
+                                SizedBox(
+                                  width: 50,
+                                  child: Divider(),
+                                ),
+                                // Divider(),
+                                SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _team2Results[set],
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) =>
+                                          {updateTeam2Results(set, value)},
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        isDense: true,
+                                        fillColor: Colors.grey.shade200,
+                                        contentPadding: EdgeInsets.all(5.0),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    )),
+                              ],
+                            )
+                          ],
+                        )
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Respond to button press
-                    },
-                    child: Text('Submit'),
-                  )
+                  Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: MyButton(onTap: () {}, text: 'Submit')),
 
                   // Expanded(child: Match())
                 ])),
@@ -253,88 +362,35 @@ class _MatchUploadState extends State<MatchUpload> {
   }
 }
 
-_playerAvatar() {
+_playerAvatar(
+    String? photoUrl, String? name, Function onPlayerSelect, context) {
   return Expanded(
-      child: CircleAvatar(
-        backgroundColor: Colors.grey.shade300,
-        minRadius: 25,
-        backgroundImage:
-        NetworkImage('https://i.pravatar.cc/300?img=${Random().nextInt(70)}'),
-      ));
+      child: GestureDetector(
+          onTap: () async {
+            await showSearch(
+              context: context,
+              delegate: SearchPlayer(callback: onPlayerSelect),
+            );
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.grey.shade300,
+            minRadius: 25,
+            backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+            child: photoUrl == null ? Text(_nameInitials(name) ?? '') : null,
+          )));
 }
 
-_matchResult(index) {
-  return Row(
-    children: [
-      Visibility(
-          visible: index != null && index == 0,
-          child: Column(
-            children: [
-              Text(''),
-              SizedBox(
-                  height: 50,
-                  child: Center(
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text('Nazareh T / Rachel A')))),
-              SizedBox(
-                // height: 50,
-                // width: 200,
-                child: Divider(),
-              ),
-              // Divider(),
-              SizedBox(
-                  height: 50,
-                  child: Center(
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Text('Tom W / Megan J')))),
-            ],
-          )),
-      Visibility(
-          visible: index > 0,
-          child: Column(
-            children: [
-              Text('${toOrdinal(index)}'),
-              SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: TextField(
-                    onChanged: (value) => {},
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      fillColor: Colors.grey.shade200,
-                      contentPadding: EdgeInsets.all(20.0),
-                      border: OutlineInputBorder(),
-                    ),
-                  )),
-              SizedBox(
-                // height: 50,
-                width: 50,
-                child: Divider(),
-              ),
-              // Divider(),
-              SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: TextField(
-                    onChanged: (value) => {},
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      fillColor: Colors.grey.shade200,
-                      contentPadding: EdgeInsets.all(20.0),
-                      border: OutlineInputBorder(),
-                    ),
-                  )),
-            ],
-          ))
-    ],
-  );
+String? _shortenName(String? name) {
+  return name?.split(" ").reduce((value, element) => '$value ${element[0]}.');
 }
 
-String toOrdinal(int number) {
+String? _nameInitials(String? name) {
+  return name
+      ?.split(" ")
+      .reduce((value, element) => '${value[0]}${element[0]}');
+}
+
+String _toOrdinal(int number) {
   if (number < 0) throw Exception('Invalid Number');
 
   switch (number % 10) {
