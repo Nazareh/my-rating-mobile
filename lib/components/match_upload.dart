@@ -6,14 +6,14 @@ import 'package:my_rating_app_mobile/components/search_player_delegate.dart';
 import '../domain/player.dart';
 
 class MatchUpload extends StatefulWidget {
-  final loggedPlayer;
+  final Player loggedPlayer;
 
   const MatchUpload({
-    Key? key,
+    super.key,
     this.color = const Color(0xFFFFE306),
     this.child,
     required this.loggedPlayer,
-  }) : super(key: key);
+  });
 
   final Color color;
   final Widget? child;
@@ -104,19 +104,19 @@ class _MatchUploadState extends State<MatchUpload> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
-          border: Border(
+          border: const Border(
             left: BorderSide(
                 color: Colors.blueAccent, width: 5.0, style: BorderStyle.solid),
           ),
         ),
         child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 25,
                       ),
                       Expanded(
@@ -152,15 +152,15 @@ class _MatchUploadState extends State<MatchUpload> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 25,
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -194,7 +194,7 @@ class _MatchUploadState extends State<MatchUpload> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
@@ -228,7 +228,7 @@ class _MatchUploadState extends State<MatchUpload> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Expanded(
@@ -239,17 +239,17 @@ class _MatchUploadState extends State<MatchUpload> {
                         ),
                         child: Row(
                           children: [
-                            Text('SETS'),
+                            const Text('SETS'),
                             Expanded(
                                 child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
-                                      inactiveTrackColor: Color(0xFF8D8E98),
+                                      inactiveTrackColor: const Color(0xFF8D8E98),
                                       activeTrackColor: Colors.blue,
-                                      thumbColor: Color(0xffdbff08),
-                                      overlayColor: Color(0x29EB1555),
-                                      thumbShape: RoundSliderThumbShape(
+                                      thumbColor: const Color(0xffdbff08),
+                                      overlayColor: const Color(0x29EB1555),
+                                      thumbShape: const RoundSliderThumbShape(
                                           enabledThumbRadius: 15.0),
-                                      overlayShape: RoundSliderOverlayShape(
+                                      overlayShape: const RoundSliderOverlayShape(
                                           overlayRadius: 30.0),
                                     ),
                                     child: Slider(
@@ -271,28 +271,28 @@ class _MatchUploadState extends State<MatchUpload> {
                     children: [
                       Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Container(
                               // decoration: BoxDecoration(color: Colors.red.shade200),
-                              padding: EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               height: 40,
                               child: Text(
                                   textAlign: TextAlign.center,
-                                  '${_shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${_shortenName("Rachel Ashby")}')),
-                          SizedBox(
+                                  '${_shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${_shortenName(_myParter?.displayName) ?? '?'}')),
+                          const SizedBox(
                             width: 150,
                             child: Divider(),
                           ),
                           Container(
                               height: 40,
-                              padding: EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(vertical: 5),
                               // decoration: BoxDecoration(color: Colors.red.shade200),
                               child: Text(
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.clip,
-                                  '${_shortenName("Tomafasfas Woods") ?? widget.loggedPlayer.email ?? '?'} / ${_shortenName("Megan fsafsafJamieson")}')),
+                                  '${_shortenName(_opponent1?.displayName) ?? '?'} / ${_shortenName(_opponent2?.displayName) ?? '?' }')),
                         ],
                       ),
                       for (int set = 0; set < _sets; set++)
@@ -303,7 +303,7 @@ class _MatchUploadState extends State<MatchUpload> {
                               children: [
                                 SizedBox(
                                   height: 20,
-                                  child: Text('${_toOrdinal(set + 1)}'),
+                                  child: Text(_toOrdinal(set + 1)),
                                 ),
                                 SizedBox(
                                     height: 40,
@@ -318,11 +318,11 @@ class _MatchUploadState extends State<MatchUpload> {
                                         filled: true,
                                         isDense: true,
                                         fillColor: Colors.grey.shade200,
-                                        contentPadding: EdgeInsets.all(5.0),
-                                        border: OutlineInputBorder(),
+                                        contentPadding: const EdgeInsets.all(5.0),
+                                        border: const OutlineInputBorder(),
                                       ),
                                     )),
-                                SizedBox(
+                                const SizedBox(
                                   width: 50,
                                   child: Divider(),
                                 ),
@@ -340,8 +340,8 @@ class _MatchUploadState extends State<MatchUpload> {
                                         filled: true,
                                         isDense: true,
                                         fillColor: Colors.grey.shade200,
-                                        contentPadding: EdgeInsets.all(5.0),
-                                        border: OutlineInputBorder(),
+                                        contentPadding: const EdgeInsets.all(5.0),
+                                        border: const OutlineInputBorder(),
                                       ),
                                     )),
                               ],
@@ -352,7 +352,7 @@ class _MatchUploadState extends State<MatchUpload> {
                   ),
                   Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: MyButton(onTap: () {}, text: 'Submit')),
 
                   // Expanded(child: Match())
