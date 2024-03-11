@@ -330,12 +330,11 @@ class _MatchUploadState extends State<MatchUpload> {
                             height: 20,
                           ),
                           Container(
-                              // decoration: BoxDecoration(color: Colors.red.shade200),
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               height: 40,
                               child: Text(
                                   textAlign: TextAlign.center,
-                                  '${shortenName(widget.loggedPlayer.displayName) ?? widget.loggedPlayer.email} / ${shortenName(_myParter?.displayName) ?? '?'}')),
+                                  '${shortenName(widget.loggedPlayer.displayName) ?? shortenName(widget.loggedPlayer.email)} / ${shortenName(_myParter?.displayName) ?? '?'}')),
                           const SizedBox(
                             width: 150,
                             child: Divider(),

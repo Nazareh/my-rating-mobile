@@ -2,8 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+
+  static User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+  static void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
   //Google sign in
-  signInWithGoogle() async {
+  static signInWithGoogle() async {
     //begin interactive sign in process
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
@@ -20,8 +28,8 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  createUserWithEmailAndPassword(String email, String password, String displayName) async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  static createUserWithEmailAndPassword(String email, String password, String displayName) async {
+   await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );

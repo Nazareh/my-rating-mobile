@@ -1,11 +1,18 @@
+import 'dart:math';
+
 String? shortenName(String? name) {
-  return name?.split(" ").reduce((value, element) => '$value ${element[0]}.');
+  return name?.split(" ").length == 1
+      ? name?.substring(0, min(name.length, 2))
+      : name?.split(" ").reduce((value, element) => '$value ${element[0]}.');
 }
 
 String? nameInitials(String? name) {
-  return name
-      ?.split(" ")
-      .reduce((value, element) => '${value[0]}${element[0]}');
+  return name?.split(" ").length == 1
+      ? name?.substring(0, min(name.length, 2)).toUpperCase()
+      : name
+          ?.split(" ")
+          .reduce((value, element) => '${value[0]}${element[0]}')
+          .toUpperCase();
 }
 
 String toOrdinal(int number) {

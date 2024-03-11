@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginScreen> {
                   children: [
                     //google buttom
                     SquareTile(
-                      onTap: () => AuthService().signInWithGoogle(),
+                      onTap: () => AuthService.signInWithGoogle(),
                       imagePath: 'lib/icons/google.svg',
                       height: 70,
                     ),

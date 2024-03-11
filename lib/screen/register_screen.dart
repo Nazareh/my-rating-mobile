@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
-        await AuthService().createUserWithEmailAndPassword(
+        await AuthService.createUserWithEmailAndPassword(
             emailController.text, passwordController.text, displayNameController.text);
       } else {
         //show error password dont match
@@ -155,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     //google buttom
                     SquareTile(
-                      onTap: () => AuthService().signInWithGoogle(),
+                      onTap: () => AuthService.signInWithGoogle(),
                       imagePath: 'lib/icons/google.svg',
                       height: 70,
                     ),
