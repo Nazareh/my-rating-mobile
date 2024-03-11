@@ -31,13 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-       var user = FirebaseAuth.instance.currentUser!;
-       user.updateDisplayName(displayNameController.text);
-       
+        await AuthService().createUserWithEmailAndPassword(
+            emailController.text, passwordController.text, displayNameController.text);
       } else {
         //show error password dont match
         genericErrorMessage("Password don't match!");
@@ -88,12 +83,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Icons.sports_tennis,
                   size: 100,
                 ),
-                const SizedBox(height: 10),
-                //welcome back you been missed
+                const SizedBox(height: 50),
 
-                const SizedBox(height: 25),
+                MyTextField(
+                  controller: displayNameController,
+                  hintText: 'Name (how other players will find you)',
+                  obscureText: false,
+                ),
 
-                //username
+                const SizedBox(height: 15),
+
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -101,7 +100,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 const SizedBox(height: 15),
-                //password
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -150,9 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 60),
-
-                //google + apple button
+                const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(
-                  height: 100,
+                  height: 50,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

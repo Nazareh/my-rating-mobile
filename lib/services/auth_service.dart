@@ -19,4 +19,16 @@ class AuthService {
     //sign in!
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
+  createUserWithEmailAndPassword(String email, String password, String displayName) async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    var user = FirebaseAuth.instance.currentUser!;
+    user.updateDisplayName(displayName);
+    user.sendEmailVerification();
+
+  }
 }

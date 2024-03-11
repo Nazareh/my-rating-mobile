@@ -18,7 +18,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          _circleAvatar(user),
           const SizedBox(width: 20),
           ElevatedButton.icon(
               onPressed: signUserOut,
@@ -30,8 +29,8 @@ class HomeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Welcome ${user.displayName}"),
               MatchUpload(loggedPlayer: Player(displayName: user.displayName!, email: user.email!, photoUrl: user.photoURL),)
             ],
           )
@@ -39,18 +38,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-_circleAvatar(User user) {
-  const avatarRadius = 35.0;
-  return user.photoURL != null
-      ? CircleAvatar(
-          backgroundImage: NetworkImage(user.photoURL!),
-          maxRadius: avatarRadius,
-        )
-      : CircleAvatar(
-          backgroundColor: Colors.green,
-          maxRadius: avatarRadius,
-          child: Text("${user.email?.substring(0, 2).toUpperCase()}"),
-        );
 }

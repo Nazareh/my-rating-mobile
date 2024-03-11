@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:interval_time_picker/interval_time_picker.dart';
 import 'package:my_rating_app_mobile/components/my_button.dart';
@@ -167,6 +169,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 widget.loggedPlayer.photoUrl,
                                 widget.loggedPlayer.displayName,
                                 () {},
+                                Colors.red,
                                 context),
                             _playerAvatar(
                                 _myParter?.photoUrl,
@@ -174,6 +177,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 (value) => setState(() {
                                       _myParter = value;
                                     }),
+                                Colors.yellow,
                                 context)
                           ],
                         ),
@@ -188,6 +192,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 (value) => setState(() {
                                       _opponent1 = value;
                                     }),
+                                Colors.green,
                                 context),
                             _playerAvatar(
                                 _opponent2?.photoUrl,
@@ -195,6 +200,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 (value) => setState(() {
                                       _opponent2 = value;
                                     }),
+                                Colors.orange,
                                 context)
                           ],
                         ),
@@ -425,7 +431,7 @@ class _MatchUploadState extends State<MatchUpload> {
 }
 
 _playerAvatar(
-    String? photoUrl, String? name, Function onPlayerSelect, context) {
+    String? photoUrl, String? name, Function onPlayerSelect, Color backgroundColor,  context) {
   return Expanded(
       child: GestureDetector(
           onTap: () async {
@@ -435,9 +441,9 @@ _playerAvatar(
             );
           },
           child: CircleAvatar(
-            backgroundColor: Colors.grey.shade300,
+            backgroundColor: name == null ? Colors.grey.shade300 : backgroundColor,
             minRadius: 25,
             backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-            child: photoUrl == null ? Text(nameInitials(name) ?? '') : null,
+            child: photoUrl == null ? Text( nameInitials(name) ?? '') : null,
           )));
 }
