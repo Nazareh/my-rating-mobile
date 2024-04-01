@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_rating_app_mobile/components/match_confirmation.dart';
 import 'package:my_rating_app_mobile/components/match_upload.dart';
 import 'package:my_rating_app_mobile/domain/player.dart';
 import 'package:my_rating_app_mobile/services/auth_service.dart';
@@ -27,7 +28,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MatchUpload(loggedPlayer: Player(displayName: user.displayName!, email: user.email!, photoUrl: user.photoURL),)
+              MatchUpload(loggedPlayer: Player(displayName: user.displayName!, email: user.email!, photoUrl: user.photoURL),),
+             MatchConfirmation('test'),
             ],
           )
         ),

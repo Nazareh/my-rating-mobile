@@ -31,7 +31,7 @@ class SearchPlayer extends SearchDelegate<Player> {
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('players').snapshots(),
+      stream: FirebaseFirestore.instance.collection('player').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -40,7 +40,7 @@ class SearchPlayer extends SearchDelegate<Player> {
         }
 
         var filteredData = snapshot.data!.docs
-            .where((element) => element['displayName']
+            .where((element) => element['name']
                 .toString()
                 .toLowerCase()
                 .contains(query.toLowerCase()))
@@ -50,7 +50,7 @@ class SearchPlayer extends SearchDelegate<Player> {
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(filteredData[index]['displayName']),
+              title: Text(filteredData[index]['name']),
               onTap: () {
                 close(
                     context,
@@ -67,16 +67,17 @@ class SearchPlayer extends SearchDelegate<Player> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('players').snapshots(),
+      stream: FirebaseFirestore.instance.collection('player').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
+        print(snapshot.data!.docs);
 
         var filteredData = snapshot.data!.docs
-            .where((element) => element['displayName'].toString().toLowerCase().contains(query.toLowerCase()))
+            .where((element) => element['name'].toString().toLowerCase().contains(query.toLowerCase()))
             .map((e) => e.data() as Map<String, dynamic>)
             .toList();
 
@@ -84,7 +85,7 @@ class SearchPlayer extends SearchDelegate<Player> {
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(filteredData[index]['displayName']),
+              title: Text(filteredData[index]['name']),
               onTap: () {
                 callback(
                     Player.fromJson(filteredData[index]));
