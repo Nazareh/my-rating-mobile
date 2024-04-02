@@ -4,7 +4,6 @@ import 'package:my_rating_app_mobile/components/match_upload.dart';
 import 'package:my_rating_app_mobile/domain/player.dart';
 import 'package:my_rating_app_mobile/services/auth_service.dart';
 
-
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
@@ -22,17 +21,21 @@ class HomeScreen extends StatelessWidget {
               label: const Text("Sign Out")),
         ],
       ),
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MatchUpload(loggedPlayer: Player(displayName: user.displayName!, email: user.email!, photoUrl: user.photoURL),),
-             MatchConfirmation('test'),
-            ],
-          )
-        ),
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MatchUpload(
+                  loggedPlayer: Player(
+                      id: user.uid,
+                      name: user.displayName!,
+                      photoUrl: user.photoURL),
+                ),
+                MatchConfirmation('test'),
+              ],
+            )),
       ),
     );
   }

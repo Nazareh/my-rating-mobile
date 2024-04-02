@@ -74,21 +74,27 @@ class SearchPlayer extends SearchDelegate<Player> {
             child: CircularProgressIndicator(),
           );
         }
-        print(snapshot.data!.docs);
 
         var filteredData = snapshot.data!.docs
-            .where((element) => element['name'].toString().toLowerCase().contains(query.toLowerCase()))
-            .map((e) => e.data() as Map<String, dynamic>)
+            .where((element) => element['name']
+                .toString()
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .map((e) {
+              var data = e.data() as Map<String, dynamic>;
+              data.putIfAbsent('id', () => e.id);
+              return data;
+            })
+            .map((e) => Player.fromJson(e))
             .toList();
 
         return ListView.builder(
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(filteredData[index]['name']),
+              title: Text(filteredData.elementAt(index).name),
               onTap: () {
-                callback(
-                    Player.fromJson(filteredData[index]));
+                callback(filteredData.elementAt(index));
                 Navigator.pop(context);
               },
             );

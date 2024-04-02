@@ -7,7 +7,6 @@ import '../domain/player.dart';
 import '../util/string_utils.dart';
 import 'flash_message.dart';
 
-
 class MatchUpload extends StatefulWidget {
   final Player loggedPlayer;
 
@@ -43,7 +42,6 @@ class _MatchUploadState extends State<MatchUpload> {
     TextEditingController(),
     TextEditingController()
   ];
-
 
   void setPlayer(Player player, Player? spot) {
     setState(() {
@@ -116,7 +114,7 @@ class _MatchUploadState extends State<MatchUpload> {
   }
 
   String? get _errorText {
-    if ({_myParter?.email, _opponent1?.email, _opponent2?.email}.length != 3) {
+    if ({_myParter?.id, _opponent1?.id, _opponent2?.id}.length != 3) {
       return 'All 4 players must be selected';
     }
     if (_dateController.text == '' || _timeController.text == '') {
@@ -163,15 +161,10 @@ class _MatchUploadState extends State<MatchUpload> {
                       Expanded(
                         child: Row(
                           children: [
+                            _playerAvatar(widget.loggedPlayer.name, () {},
+                                Colors.red, context),
                             _playerAvatar(
-                                widget.loggedPlayer.photoUrl,
-                                widget.loggedPlayer.displayName,
-                                () {},
-                                Colors.red,
-                                context),
-                            _playerAvatar(
-                                _myParter?.photoUrl,
-                                _myParter?.displayName,
+                                _myParter?.name,
                                 (value) => setState(() {
                                       _myParter = value;
                                     }),
@@ -185,19 +178,13 @@ class _MatchUploadState extends State<MatchUpload> {
                         child: Row(
                           children: [
                             _playerAvatar(
-                                _opponent1?.photoUrl,
-                                _opponent1?.displayName,
-                                (value) => setState(() {
-                                      _opponent1 = value;
-                                    }),
+                                _opponent1?.name,
+                                (value) => setState(() => _opponent1 = value),
                                 Colors.green,
                                 context),
                             _playerAvatar(
-                                _opponent2?.photoUrl,
-                                _opponent2?.displayName,
-                                (value) => setState(() {
-                                      _opponent2 = value;
-                                    }),
+                                _opponent2?.name,
+                                (value) => setState(() => _opponent2 = value),
                                 Colors.orange,
                                 context)
                           ],
@@ -332,9 +319,9 @@ class _MatchUploadState extends State<MatchUpload> {
                               height: 40,
                               child: Text(
                                   textAlign: TextAlign.center,
-                                  '${shortenName(widget.loggedPlayer.displayName) ?? shortenName(widget.loggedPlayer.email)} / ${shortenName(_myParter?.displayName) ?? '?'}')),
+                                  '${shortenName(widget.loggedPlayer.name)} / ${shortenName(_myParter?.name) ?? '?'}')),
                           const SizedBox(
-                            width: 150,
+                            width: 125,
                             child: Divider(),
                           ),
                           Container(
@@ -344,7 +331,7 @@ class _MatchUploadState extends State<MatchUpload> {
                               child: Text(
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.clip,
-                                  '${shortenName(_opponent1?.displayName) ?? '?'} / ${shortenName(_opponent2?.displayName) ?? '?'}')),
+                                  '${shortenName(_opponent1?.name) ?? '?'} / ${shortenName(_opponent2?.name) ?? '?'}')),
                         ],
                       ),
                       for (int set = 0; set < _sets; set++)
@@ -419,7 +406,6 @@ class _MatchUploadState extends State<MatchUpload> {
                             }
                           },
                           text: 'Submit')),
-
                   // Expanded(child: Match())
                 ])),
       ),
@@ -428,7 +414,7 @@ class _MatchUploadState extends State<MatchUpload> {
 }
 
 _playerAvatar(
-    String? photoUrl, String? name, Function onPlayerSelect, Color backgroundColor,  context) {
+    String? name, Function onPlayerSelect, Color backgroundColor, context) {
   return Expanded(
       child: GestureDetector(
           onTap: () async {
@@ -438,9 +424,8 @@ _playerAvatar(
             );
           },
           child: CircleAvatar(
-            backgroundColor: name == null ? Colors.grey.shade300 : backgroundColor,
-            minRadius: 25,
-            backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-            child: photoUrl == null ? Text( nameInitials(name) ?? '') : null,
+            backgroundColor:
+                name == null ? Colors.grey.shade300 : backgroundColor,
+            child: Text(nameInitials(name) ?? ''),
           )));
 }

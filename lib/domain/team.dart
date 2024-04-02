@@ -8,10 +8,8 @@ class Team {
 
   factory Team.fromJson(Map<dynamic, dynamic> json) {
     return Team(
-      player1: Player.fromJson(json['player1']),
-      player2: Player.fromJson(json['player2']),
+      player1: Player.fromJson(json['matchPlayer1']),
+      player2: Player.fromJson(json['matchPlayer2']),
     );
   }
-
-
 }
