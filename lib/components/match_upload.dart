@@ -6,6 +6,7 @@ import 'package:my_rating_app_mobile/components/search_player_delegate.dart';
 import '../domain/player.dart';
 import '../util/string_utils.dart';
 import 'flash_message.dart';
+import 'player_avatar.dart';
 
 class MatchUpload extends StatefulWidget {
   final Player loggedPlayer;
@@ -168,7 +169,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 (value) => setState(() {
                                       _myParter = value;
                                     }),
-                                Colors.yellow,
+                                Colors.purple,
                                 context)
                           ],
                         ),
@@ -423,9 +424,5 @@ _playerAvatar(
               delegate: SearchPlayer(callback: onPlayerSelect),
             );
           },
-          child: CircleAvatar(
-            backgroundColor:
-                name == null ? Colors.grey.shade300 : backgroundColor,
-            child: Text(nameInitials(name) ?? ''),
-          )));
+          child: PlayerAvatar(name: name, backgroundColor: backgroundColor)));
 }

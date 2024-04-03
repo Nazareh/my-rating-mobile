@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                       name: user.displayName!,
                       photoUrl: user.photoURL),
                 ),
-                MatchConfirmation('test'),
+               const MatchConfirmation(),
               ],
             )),
       ),
