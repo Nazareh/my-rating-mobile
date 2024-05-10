@@ -1,42 +1,26 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_rating_app_mobile/components/match_confirmation.dart';
-import 'package:my_rating_app_mobile/components/match_upload.dart';
-import 'package:my_rating_app_mobile/domain/player.dart';
-import 'package:my_rating_app_mobile/services/auth_service.dart';
+import 'package:my_rating_app_mobile/screen/home_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+import 'login_or_register_screen.dart';
 
-  final user = AuthService.getCurrentUser()!;
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        actions: [
-          const SizedBox(width: 20),
-          ElevatedButton.icon(
-              onPressed: () => AuthService.signUserOut(),
-              icon: const Icon(Icons.logout),
-              label: const Text("Sign Out")),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MatchUpload(
-                  loggedPlayer: Player(
-                      id: user.uid,
-                      name: user.displayName!,
-                      photoUrl: user.photoURL),
-                ),
-                const MatchConfirmation(),
-              ],
-            )),
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData && snapshot.data != null && snapshot.data!.displayName != null && snapshot.data!.email != null ) {
+            return HomeScreen();
+          }
+          else{
+            return const LoginOrRegisterScreen();
+          }
+        },
       ),
     );
   }
