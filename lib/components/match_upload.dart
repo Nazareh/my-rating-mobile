@@ -140,12 +140,29 @@ class _MatchUploadState extends State<MatchUpload> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(15.0),
       child: Container(
-        constraints: const BoxConstraints(minHeight: 350, maxHeight: 350),
+        constraints: const BoxConstraints(maxHeight: 320),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.green,
+              offset: const Offset(
+                50.0,
+                5.0,
+              ),
+              blurRadius: 10.0,
+              spreadRadius: 20.0,
+            ), //BoxShadow
+            BoxShadow(
+              color: Colors.red,
+              offset: const Offset(60.0, 60.0),
+              blurRadius: 20.0,
+              spreadRadius: 30.0,
+            ),
+          ],
           border: const Border(
-            left: BorderSide(
+            top: BorderSide(
                 color: Colors.blueAccent, width: 5.0, style: BorderStyle.solid),
           ),
         ),
@@ -157,7 +174,7 @@ class _MatchUploadState extends State<MatchUpload> {
                   Row(
                     children: [
                       const SizedBox(
-                        width: 25,
+                        width: 50,
                       ),
                       Expanded(
                         child: Row(
@@ -174,7 +191,7 @@ class _MatchUploadState extends State<MatchUpload> {
                           ],
                         ),
                       ),
-                      const Text('VS', style: TextStyle(fontSize: 30)),
+                      const Text('VS', style: TextStyle(fontSize: 15)),
                       Expanded(
                         child: Row(
                           children: [
@@ -192,12 +209,9 @@ class _MatchUploadState extends State<MatchUpload> {
                         ),
                       ),
                       const SizedBox(
-                        width: 25,
+                        width: 50,
                       )
                     ],
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   const SizedBox(
                     height: 10,
@@ -217,11 +231,11 @@ class _MatchUploadState extends State<MatchUpload> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                                  horizontal: 20, vertical: 10),
                               hintText: 'Date',
                               hintStyle: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 16,
+                                fontSize: 14,
                               ),
                               prefixIcon: Icon(
                                 Icons.date_range,
@@ -249,11 +263,11 @@ class _MatchUploadState extends State<MatchUpload> {
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                                  horizontal: 20, vertical: 10),
                               hintText: 'Time',
                               hintStyle: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 16,
+                                fontSize: 14,
                               ),
                               prefixIcon: Icon(
                                 Icons.timelapse,
@@ -267,46 +281,37 @@ class _MatchUploadState extends State<MatchUpload> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   Expanded(
                     child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
                         child: Row(
-                          children: [
-                            const Text('SETS'),
-                            Expanded(
-                                child: SliderTheme(
-                                    data: SliderTheme.of(context).copyWith(
-                                      inactiveTrackColor:
-                                          const Color(0xFF8D8E98),
-                                      activeTrackColor: Colors.blue,
-                                      thumbColor: const Color(0xffdbff08),
-                                      overlayColor: const Color(0x29EB1555),
-                                      thumbShape: const RoundSliderThumbShape(
-                                          enabledThumbRadius: 15.0),
-                                      overlayShape:
-                                          const RoundSliderOverlayShape(
-                                              overlayRadius: 30.0),
-                                    ),
-                                    child: Slider(
-                                      value: _sets.toDouble(),
-                                      min: 1,
-                                      max: 3,
-                                      divisions: 2,
-                                      label: _sets.round().toString(),
-                                      onChanged: (double value) {
-                                        setState(() {
-                                          _sets = value.toInt();
-                                        });
-                                      },
-                                    ))),
-                          ],
-                        )),
+                      children: [
+                        const Text('SETS'),
+                        Expanded(
+                            child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  inactiveTrackColor: const Color(0xFF8D8E98),
+                                  activeTrackColor: Colors.blue,
+                                  thumbColor: const Color(0xffdbff08),
+                                  overlayColor: const Color(0x29EB1555),
+                                  thumbShape: const RoundSliderThumbShape(
+                                      enabledThumbRadius: 15.0),
+                                  overlayShape: const RoundSliderOverlayShape(
+                                      overlayRadius: 30.0),
+                                ),
+                                child: Slider(
+                                  value: _sets.toDouble(),
+                                  min: 1,
+                                  max: 3,
+                                  divisions: 2,
+                                  label: _sets.round().toString(),
+                                  onChanged: (double value) {
+                                    setState(() {
+                                      _sets = value.toInt();
+                                    });
+                                  },
+                                ))),
+                      ],
+                    )),
                   ),
                   Row(
                     children: [
@@ -317,7 +322,7 @@ class _MatchUploadState extends State<MatchUpload> {
                           ),
                           Container(
                               padding: const EdgeInsets.symmetric(vertical: 5),
-                              height: 40,
+                              height: 30,
                               child: Text(
                                   textAlign: TextAlign.center,
                                   '${shortenName(widget.loggedPlayer.name)} / ${shortenName(_myParter?.name) ?? '?'}')),
@@ -326,7 +331,7 @@ class _MatchUploadState extends State<MatchUpload> {
                             child: Divider(),
                           ),
                           Container(
-                              height: 40,
+                              height: 30,
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               // decoration: BoxDecoration(color: Colors.red.shade200),
                               child: Text(
@@ -346,7 +351,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                   child: Text(toOrdinal(set + 1)),
                                 ),
                                 SizedBox(
-                                    height: 40,
+                                    height: 30,
                                     width: 40,
                                     child: TextField(
                                       textAlign: TextAlign.center,
@@ -369,7 +374,7 @@ class _MatchUploadState extends State<MatchUpload> {
                                 ),
                                 // Divider(),
                                 SizedBox(
-                                    height: 40,
+                                    height: 30,
                                     width: 40,
                                     child: TextField(
                                       textAlign: TextAlign.center,
@@ -394,7 +399,7 @@ class _MatchUploadState extends State<MatchUpload> {
                   ),
                   Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 20, vertical: 5),
                       child: MyButton(
                           onTap: () {
                             if (_errorText == null) {

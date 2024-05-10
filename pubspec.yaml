@@ -5,7 +5,7 @@ description: "Mobile App to manage players ratings"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   firebase_core: ^2.25.5
   firebase_auth: ^4.17.6
-  google_sign_in: ^6.2.1
+  google_sign_in: ^6.1.6
   flutter_svg: ^2.0.5
   interval_time_picker: ^2.0.0+5
   http: ^1.2.0

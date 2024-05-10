@@ -13,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         actions: [
           const SizedBox(width: 20),
           ElevatedButton.icon(
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                       name: user.displayName!,
                       photoUrl: user.photoURL),
                 ),
-               const MatchConfirmation(),
+                const MatchConfirmation(),
               ],
             )),
       ),

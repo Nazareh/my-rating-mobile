@@ -43,7 +43,7 @@ class MatchConfirmation extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.yellow.shade50,
                             border: const Border(
-                              left: BorderSide(
+                              top: BorderSide(
                                   color: Colors.yellowAccent,
                                   width: 5.0,
                                   style: BorderStyle.solid),
@@ -74,8 +74,9 @@ class MatchConfirmation extends StatelessWidget {
                                                   '${shortenName(matches.elementAt(index).team1.player1.name)} / ${shortenName(matches.elementAt(index).team1.player2.name)}'),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5),
                                               child: Text(
                                                   textAlign: TextAlign.start,
                                                   '${shortenName(matches.elementAt(index).team2.player1.name)} / ${shortenName(matches.elementAt(index).team2.player2.name)}'),
