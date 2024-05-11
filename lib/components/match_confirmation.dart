@@ -1,13 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
+import '../domain/player.dart';
+import '../util/match_utils.dart';
 import '../util/string_utils.dart';
 import './flash_message.dart';
 import './my_button.dart';
 import '../domain/match.dart';
 
 class MatchConfirmation extends StatelessWidget {
-  const MatchConfirmation({super.key});
+  final String loggedPlayerId;
+  const MatchConfirmation({super.key, required this.loggedPlayerId});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,16 @@ class MatchConfirmation extends StatelessWidget {
         return SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
+                  'Matches pending confirmation',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+              ),
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -38,11 +52,11 @@ class MatchConfirmation extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          margin: const EdgeInsets.symmetric(vertical: 15),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.yellow.shade50,
-                            border: const Border(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
                               top: BorderSide(
                                   color: Colors.yellowAccent,
                                   width: 5.0,
@@ -53,11 +67,11 @@ class MatchConfirmation extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Column(children: [
-                                Text(DateTime.fromMillisecondsSinceEpoch(matches
+                                Text(DateFormat('E, d MMM yyyy h:mm a').format(
+                                    DateTime.fromMillisecondsSinceEpoch(matches
                                         .elementAt(index)
                                         .startTime
-                                        .millisecondsSinceEpoch)
-                                    .toString()),
+                                        .millisecondsSinceEpoch))),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -67,19 +81,44 @@ class MatchConfirmation extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5),
-                                              child: Text(
-                                                  textAlign: TextAlign.start,
-                                                  '${shortenName(matches.elementAt(index).team1.player1.name)} / ${shortenName(matches.elementAt(index).team1.player2.name)}'),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5),
+                                              child: Row(
+                                                children: [
+                                                  PlayerName(
+                                                      player: matches
+                                                          .elementAt(index)
+                                                          .team1
+                                                          .player1),
+                                                  const Text(' / '),
+                                                  PlayerName(
+                                                      player: matches
+                                                          .elementAt(index)
+                                                          .team1
+                                                          .player2),
+                                                ],
+                                              ),
                                             ),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       vertical: 5),
-                                              child: Text(
-                                                  textAlign: TextAlign.start,
-                                                  '${shortenName(matches.elementAt(index).team2.player1.name)} / ${shortenName(matches.elementAt(index).team2.player2.name)}'),
+                                              child: Row(
+                                                children: [
+                                                  PlayerName(
+                                                      player: matches
+                                                          .elementAt(index)
+                                                          .team2
+                                                          .player1),
+                                                  const Text(' / '),
+                                                  PlayerName(
+                                                      player: matches
+                                                          .elementAt(index)
+                                                          .team2
+                                                          .player2),
+                                                ],
+                                              ),
                                             ),
                                           ]),
                                       Column(children: [
@@ -93,7 +132,8 @@ class MatchConfirmation extends StatelessWidget {
                                                         .length;
                                                 i++)
                                               Padding(
-                                                  padding: EdgeInsets.all(5),
+                                                  padding:
+                                                      const EdgeInsets.all(5),
                                                   child: Text(matches
                                                       .elementAt(index)
                                                       .sets[i]
@@ -111,7 +151,8 @@ class MatchConfirmation extends StatelessWidget {
                                                         .length;
                                                 i++)
                                               Padding(
-                                                  padding: EdgeInsets.all(5),
+                                                  padding:
+                                                      const EdgeInsets.all(5),
                                                   child: Text(matches
                                                       .elementAt(index)
                                                       .sets[i]
@@ -120,87 +161,35 @@ class MatchConfirmation extends StatelessWidget {
                                           ],
                                         ),
                                       ]),
-                                      // Column(children: [
-                                      //   Row(
-                                      //       mainAxisAlignment:
-                                      //           MainAxisAlignment.spaceAround,
-                                      //       children: [
-                                      //         Text(
-                                      //             textAlign: TextAlign.center,
-                                      //             '${shortenName(matches.elementAt(index).team1.player1.name)} / ${shortenName(matches.elementAt(index).team1.player2.name)}'),
-                                      //         Row(
-                                      //           children: [
-                                      //             for (int i = 0;
-                                      //                 i <
-                                      //                     matches
-                                      //                         .elementAt(index)
-                                      //                         .sets
-                                      //                         .length;
-                                      //                 i++)
-                                      //               Container(
-                                      //                   padding: EdgeInsets.all(5),
-                                      //                   child: Text(matches
-                                      //                       .elementAt(index)
-                                      //                       .sets[i]
-                                      //                       .team1Score
-                                      //                       .toString()))
-                                      //           ],
-                                      //         )
-                                      //       ]),
-                                      //   const SizedBox(
-                                      //     // width: 125,
-                                      //     child: Divider(),
-                                      //   ),
-                                      //   Row(children: [
-                                      //     const SizedBox(width: 10),
-                                      //     Text(
-                                      //         textAlign: TextAlign.center,
-                                      //         '${shortenName(matches.elementAt(index).team2.player1.name)} / ${shortenName(matches.elementAt(index).team2.player2.name)}'),
-                                      //     Row(
-                                      //       children: [
-                                      //         for (int i = 0;
-                                      //             i <
-                                      //                 matches
-                                      //                     .elementAt(index)
-                                      //                     .sets
-                                      //                     .length;
-                                      //             i++)
-                                      //           Container(
-                                      //               padding: EdgeInsets.all(5),
-                                      //               child: Text(matches
-                                      //                   .elementAt(index)
-                                      //                   .sets[i]
-                                      //                   .team2Score
-                                      //                   .toString()))
-                                      //       ],
-                                      //     )
-                                      //   ]),
-
-                                      // ])
                                     ]),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      MyButton(
-                                          color: Colors.red.shade400,
-                                          onTap: () {
-                                            showFlashMessage(
-                                                context,
-                                                'Match Rejeced',
-                                                MessageType.error);
-                                          },
-                                          text: 'REJECT'),
-                                      MyButton(
-                                          color: Colors.green,
-                                          onTap: () {
-                                            showFlashMessage(
-                                                context,
-                                                'Match Approved',
-                                                MessageType.success);
-                                          },
-                                          text: 'APPROVE')
-                                    ])
+                                if (matchPlayersAsSet(matches.elementAt(index))
+                                        .firstWhere(
+                                            (e) => e.id == loggedPlayerId)
+                                        .status !=
+                                    'APPROVED')
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        MyButton(
+                                            color: Colors.red.shade400,
+                                            onTap: () {
+                                              showFlashMessage(
+                                                  context,
+                                                  'Match Rejected',
+                                                  MessageType.error);
+                                            },
+                                            text: 'REJECT'),
+                                        MyButton(
+                                            color: Colors.green,
+                                            onTap: () {
+                                              showFlashMessage(
+                                                  context,
+                                                  'Match Approved',
+                                                  MessageType.success);
+                                            },
+                                            text: 'APPROVE')
+                                      ])
                               ])),
 
                           // const Text('Some text')
@@ -210,6 +199,39 @@ class MatchConfirmation extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class PlayerName extends StatelessWidget {
+  final Player player;
+
+  const PlayerName({super.key, required this.player});
+
+  Icon _getIcon(String? status) {
+    if (status == 'PENDING') {
+      return const Icon(
+        Icons.timelapse_rounded,
+        color: Colors.yellow,
+      );
+    }
+    if (status == 'REJECTED') {
+      return const Icon(
+        Icons.block,
+        color: Colors.red,
+      );
+    }
+    if (status == 'APPROVED') {
+      return const Icon(Icons.check, color: Colors.green);
+    }
+
+    return const Icon(Icons.error, color: Colors.red);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [Text('${shortenName(player.name)}'), _getIcon(player.status)],
     );
   }
 }

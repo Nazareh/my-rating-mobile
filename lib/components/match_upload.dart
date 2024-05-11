@@ -137,290 +137,301 @@ class _MatchUploadState extends State<MatchUpload> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15.0),
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 320),
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.green,
-              offset: Offset(
-                50.0,
-                5.0,
-              ),
-              blurRadius: 10.0,
-              spreadRadius: 20.0,
-            ), //BoxShadow
-            BoxShadow(
-              color: Colors.red,
-              offset: Offset(60.0, 60.0),
-              blurRadius: 20.0,
-              spreadRadius: 30.0,
-            ),
-          ],
-          border: Border(
-            top: BorderSide(
-                color: Colors.blueAccent, width: 5.0, style: BorderStyle.solid),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 3),
+          child: const Text('Upload a match',
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
         ),
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(15.0),
+          child: Container(
+            constraints: const BoxConstraints(maxHeight: 320),
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: Offset(
+                    50.0,
+                    5.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: 20.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.red,
+                  offset: Offset(60.0, 60.0),
+                  blurRadius: 20.0,
+                  spreadRadius: 30.0,
+                ),
+              ],
+              border: Border(
+                top: BorderSide(
+                    color: Colors.blueAccent, width: 5.0, style: BorderStyle.solid),
+              ),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            _playerAvatar(widget.loggedPlayer.name, () {},
-                                Colors.blue.shade300, context),
-                            _playerAvatar(
-                                _myParter?.name,
-                                (value) => setState(() {
-                                      _myParter = value;
-                                    }),
-                                Colors.blue.shade300,
-                                context)
-                          ],
-                        ),
-                      ),
-                      const Text('VS', style: TextStyle(fontSize: 15)),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            _playerAvatar(
-                                _opponent1?.name,
-                                (value) => setState(() => _opponent1 = value),
-                                Colors.red.shade300,
-                                context),
-                            _playerAvatar(
-                                _opponent2?.name,
-                                (value) => setState(() => _opponent2 = value),
-                                Colors.red.shade300,
-                                context)
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 50,
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: TextFormField(
-                            controller: _dateController,
-                            keyboardType: TextInputType.datetime,
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              hintText: 'Date',
-                              hintStyle: TextStyle(
-                                fontSize: 14,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            readOnly: true,
-                            onTap: _selectDate,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: TextFormField(
-                            controller: _timeController,
-                            keyboardType: TextInputType.datetime,
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              hintText: 'Time',
-                              hintStyle: TextStyle(
-                                fontSize: 14,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.timelapse,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            readOnly: true,
-                            onTap: _selectTime,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const Text('SETS'),
-                        Expanded(
-                            child: SliderTheme(
-                                data: SliderTheme.of(context).copyWith(
-                                  inactiveTrackColor: const Color(0xFF8D8E98),
-                                  activeTrackColor: Colors.blue,
-                                  thumbColor: const Color(0xffdbff08),
-                                  overlayColor: Colors.blue.shade100,
-                                  thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 15.0),
-                                  overlayShape: const RoundSliderOverlayShape(
-                                      overlayRadius: 30.0),
-                                ),
-                                child: Slider(
-                                  value: _sets.toDouble(),
-                                  min: 1,
-                                  max: 3,
-                                  divisions: 2,
-                                  label: _sets.round().toString(),
-                                  onChanged: (double value) {
-                                    setState(() {
-                                      _sets = value.toInt();
-                                    });
-                                  },
-                                ))),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Column(
+                      Row(
                         children: [
                           const SizedBox(
-                            height: 20,
+                            width: 50,
                           ),
-                          Container(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              height: 30,
-                              child: Text(
-                                  textAlign: TextAlign.center,
-                                  '${shortenName(widget.loggedPlayer.name)} / ${shortenName(_myParter?.name) ?? '?'}')),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                _playerAvatar(widget.loggedPlayer.name, () {},
+                                    Colors.blue.shade300, context),
+                                _playerAvatar(
+                                    _myParter?.name,
+                                    (value) => setState(() {
+                                          _myParter = value;
+                                        }),
+                                    Colors.blue.shade300,
+                                    context)
+                              ],
+                            ),
+                          ),
+                          const Text('VS', style: TextStyle(fontSize: 15)),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                _playerAvatar(
+                                    _opponent1?.name,
+                                    (value) => setState(() => _opponent1 = value),
+                                    Colors.red.shade300,
+                                    context),
+                                _playerAvatar(
+                                    _opponent2?.name,
+                                    (value) => setState(() => _opponent2 = value),
+                                    Colors.red.shade300,
+                                    context)
+                              ],
+                            ),
+                          ),
                           const SizedBox(
-                            width: 150,
-                            child: Divider(),
-                          ),
-                          Container(
-                              height: 30,
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: Text(
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.clip,
-                                  '${shortenName(_opponent1?.name) ?? '?'} / ${shortenName(_opponent2?.name) ?? '?'}')),
+                            width: 50,
+                          )
                         ],
                       ),
-                      for (int set = 0; set < _sets; set++)
-                        Row(
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextFormField(
+                                controller: _dateController,
+                                keyboardType: TextInputType.datetime,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  hintText: 'Date',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.date_range,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                readOnly: true,
+                                onTap: _selectDate,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextFormField(
+                                controller: _timeController,
+                                keyboardType: TextInputType.datetime,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  hintText: 'Time',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.timelapse,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                readOnly: true,
+                                onTap: _selectTime,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: Row(
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            const Text('SETS'),
+                            Expanded(
+                                child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      inactiveTrackColor: const Color(0xFF8D8E98),
+                                      activeTrackColor: Colors.blue,
+                                      thumbColor: const Color(0xffdbff08),
+                                      overlayColor: Colors.blue.shade100,
+                                      thumbShape: const RoundSliderThumbShape(
+                                          enabledThumbRadius: 15.0),
+                                      overlayShape: const RoundSliderOverlayShape(
+                                          overlayRadius: 30.0),
+                                    ),
+                                    child: Slider(
+                                      value: _sets.toDouble(),
+                                      min: 1,
+                                      max: 3,
+                                      divisions: 2,
+                                      label: _sets.round().toString(),
+                                      onChanged: (double value) {
+                                        setState(() {
+                                          _sets = value.toInt();
+                                        });
+                                      },
+                                    ))),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  height: 30,
+                                  child: Text(
+                                      textAlign: TextAlign.center,
+                                      '${shortenName(widget.loggedPlayer.name)} / ${shortenName(_myParter?.name) ?? '?'}')),
+                              const SizedBox(
+                                width: 150,
+                                child: Divider(),
+                              ),
+                              Container(
+                                  height: 30,
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Text(
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.clip,
+                                      '${shortenName(_opponent1?.name) ?? '?'} / ${shortenName(_opponent2?.name) ?? '?'}')),
+                            ],
+                          ),
+                          for (int set = 0; set < _sets; set++)
+                            Row(
                               children: [
-                                SizedBox(
-                                  height: 20,
-                                  child: Text(toOrdinal(set + 1)),
-                                ),
-                                SizedBox(
-                                    height: 30,
-                                    width: 40,
-                                    child: TextField(
-                                      style: const TextStyle(fontSize: 14),
-                                      textAlign: TextAlign.center,
-                                      controller: _team1Results[set],
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value) =>
-                                          {updateTeam1Results(set, value)},
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        contentPadding: EdgeInsets.all(3.0),
-                                        border: OutlineInputBorder(),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 0.5),
-                                        ),
-                                      ),
-                                    )),
-                                const SizedBox(
-                                  width: 50,
-                                  child: Divider(),
-                                ),
-                                // Divider(),
-                                SizedBox(
-                                    height: 30,
-                                    width: 40,
-                                    child: TextField(
-                                      style: const TextStyle(fontSize: 14),
-                                      textAlign: TextAlign.center,
-                                      controller: _team2Results[set],
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value) =>
-                                          {updateTeam2Results(set, value)},
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.all(3.0),
-                                        border: OutlineInputBorder(),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 0.5),
-                                        ),
-                                      ),
-                                    )),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                      child: Text(toOrdinal(set + 1)),
+                                    ),
+                                    SizedBox(
+                                        height: 30,
+                                        width: 40,
+                                        child: TextField(
+                                          style: const TextStyle(fontSize: 14),
+                                          textAlign: TextAlign.center,
+                                          controller: _team1Results[set],
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (value) =>
+                                              {updateTeam1Results(set, value)},
+                                          decoration: const InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            contentPadding: EdgeInsets.all(3.0),
+                                            border: OutlineInputBorder(),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey, width: 0.5),
+                                            ),
+                                          ),
+                                        )),
+                                    const SizedBox(
+                                      width: 50,
+                                      child: Divider(),
+                                    ),
+                                    // Divider(),
+                                    SizedBox(
+                                        height: 30,
+                                        width: 40,
+                                        child: TextField(
+                                          style: const TextStyle(fontSize: 14),
+                                          textAlign: TextAlign.center,
+                                          controller: _team2Results[set],
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (value) =>
+                                              {updateTeam2Results(set, value)},
+                                          decoration: const InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(3.0),
+                                            border: OutlineInputBorder(),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey, width: 0.5),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                )
                               ],
                             )
-                          ],
-                        )
-                    ],
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 0),
-                      child: MyButton(
-                          onTap: () {
-                            if (_errorText == null) {
-                              showFlashMessage(context, 'Match Uploaded',
-                                  MessageType.success);
-                              clearForm();
-                            } else {
-                              showFlashMessage(
-                                  context, _errorText!, MessageType.error);
-                            }
-                          },
-                          text: 'Submit')),
-                ])),
-      ),
+                        ],
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
+                          child: MyButton(
+                              onTap: () {
+                                if (_errorText == null) {
+                                  showFlashMessage(context, 'Match Uploaded',
+                                      MessageType.success);
+                                  clearForm();
+                                } else {
+                                  showFlashMessage(
+                                      context, _errorText!, MessageType.error);
+                                }
+                              },
+                              text: 'Submit')),
+                    ])),
+          ),
+        ),
+      ],
     );
   }
 }

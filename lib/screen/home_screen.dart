@@ -32,9 +32,10 @@ class HomeScreen extends StatelessWidget {
                   loggedPlayer: Player(
                       id: user.uid,
                       name: user.displayName!,
+                      status: null,
                       photoUrl: user.photoURL),
                 ),
-                const MatchConfirmation(),
+                MatchConfirmation(loggedPlayerId: user.uid,),
               ],
             )),
       ),
